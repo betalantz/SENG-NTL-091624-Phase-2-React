@@ -5,7 +5,7 @@ import toast from "react-hot-toast"
 //     const [data, setData] = useState(null)
 // }
 
-function useFetcher(url){
+export default function useFetcher(url){
     const [data, setData] = useState([])
     const [isLoading, setIsLoading] = useState(true)
     const [error, setError] = useState("")
@@ -32,5 +32,5 @@ function useFetcher(url){
         fetchData()
     }, [url])
 
-    return { data, loading, error, setData }
+    return { data, isLoading, error, setData }
 }

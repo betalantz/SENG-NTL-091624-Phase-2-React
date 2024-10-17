@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useContext } from "react";
+import useFetcher from './custom_hooks/useFetcher'
 import Header from "./components/navigation/Header";
 import { ThemeContext } from './context/ThemeProvider'
 import { Outlet } from "react-router-dom";
@@ -13,6 +14,8 @@ const App = () => {
   // const [projects, setProjects] = useState([]);
 
   const { isDarkMode } = useContext(ThemeContext)
+
+  const { data: projects, isLoading, error, setData: setProjects } = useFetcher(baseURL)
 
   // useEffect(() => {
   //   const loadProjects = async () => {
