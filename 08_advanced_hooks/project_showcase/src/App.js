@@ -1,36 +1,41 @@
 import { useState, useEffect, useCallback, useContext } from "react";
-import useFetcher from './custom_hooks/useFetcher'
+import useFetcher from "./custom_hooks/useFetcher";
 import Header from "./components/navigation/Header";
-import { ThemeContext } from './context/ThemeProvider'
+import { ThemeContext } from "./context/ThemeProvider";
 import { Outlet } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 
 const baseURL = "http://localhost:4000/projects/";
 
 const App = () => {
-  // const [isDarkMode, setIsDarkMode] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [phaseSelected, setPhaseSelected] = useState("All");
-  // const [projects, setProjects] = useState([]);
 
-  const { isDarkMode } = useContext(ThemeContext)
+  const { isDarkMode } = useContext(ThemeContext);
 
-  const { data: projects, isLoading, error, setData: setProjects } = useFetcher(baseURL)
+  //! Option 1(exporting setData):
+  //!Best for reducing boilerplate and if you want to handle all data management in a single hook.
+  //!It simplifies your code but might blur the line between fetching and state management.
+  const {
+    data: projects,
+    isLoading,
+    error,
+    setData: setProjects,
+  } = useFetcher(baseURL);
+
+  //! Option 2(separate state):
+  //! More flexible and explicit.It keeps fetching and state management separate,
+  //! which might be easier to maintain, especially if you have complex data flows.It is more modular.
+  // const { data, loading, error } = useFetcher(baseURL);
+  // const [projects, setProjects] = useState(data || []); // Using a separate state
 
   // useEffect(() => {
-  //   const loadProjects = async () => {
-  //     try {
-  //       const resp = await fetch("http://localhost:4000/projects");
-  //       const data = await resp.json();
-  //       setProjects(data);
-  //     } catch (error) {
-  //       toast.error(error.message);
-  //     }
-  //   };
-  //   loadProjects();
-  // }, []);
+  //   if (data) {
+  //     setProjects(data); // Sync state with fetched data
+  //   }
+  // }, [data]);
 
-  //! Memoized functions
+  //! Memoized functions (useCallback)
   //! Memoization with useCallback prevents re-creating function references on every render
   //! which helps avoid unnecessary re-renders of child components.
   //! Avoid memoizing everything indiscriminately.
